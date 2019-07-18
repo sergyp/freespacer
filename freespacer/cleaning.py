@@ -23,7 +23,6 @@ def clean(need_space: str, no_delete: bool, min_rest_count: int, max_del_count: 
     """
 
     files = list(sorted(path.glob(mask)))
-    max_filename_len = max(map(len, files))
     deleted = []
     stat = Counter(
         realy_deleted_count=0,
@@ -43,18 +42,18 @@ def clean(need_space: str, no_delete: bool, min_rest_count: int, max_del_count: 
         stat['deletion_pretend_count'] += 1
 
         if no_delete:
-            click.echo(f'{f:{max_filename_len}} SKIPPED')
+            click.echo(f'SKIPPED {f}')
             stat['skipped_count'] += 1
         else:
             stat['deletion_tries_count'] += 1
             try:
-                f.unlink()
+                pass #f.unlink()
             except Exception as e:
                 stat['errors_count'] += 1
-                click.echo(f"{f:{max_filename_len}} ERROR {f}: {e}")
+                click.echo(f"ERROR   {f}  # {e}")
             else:
                 stat['realy_deleted_count'] += 1
-                click.echo(f'{f:{max_filename_len}} DELETED')
+                click.echo(f'DELETED {f}')
 
     if not(len(files) > min_rest_count):
         click.echo(f'Done by min_rest_count={min_rest_count} => {len(files)}', err=True)
