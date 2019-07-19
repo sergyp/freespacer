@@ -25,16 +25,16 @@ UNITS = {
 _UNITS_UPPER = {k.upper(): v for k, v in UNITS.items()}
 
 
-def to_bytes(s: str):
+def to_bytes(s):
     if s.isdigit():
         return int(s), 'B'
 
     v = s.upper().replace(' ', '').replace(',', '.')
     if v.count('.') > 1:
-        raise ValueError('Invalid value: {s!r}')
+        raise ValueError('Invalid value: {!r}'.format(s))
 
     r = '|'.join(_UNITS_UPPER.keys())
-    m = re.match(f'^(.*?)({r})$', v)
+    m = re.match('^(.*?)({})$'.format(r), v)
     if not m:
         return int(v), 'B'
 
