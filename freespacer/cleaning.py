@@ -47,7 +47,7 @@ def clean(need_space: str, no_delete: bool, min_rest_count: int, max_del_count: 
         else:
             stat['deletion_tries_count'] += 1
             try:
-                pass #f.unlink()
+                f.unlink()
             except Exception as e:
                 stat['errors_count'] += 1
                 click.echo(f"ERROR   {f}  # {e}")
