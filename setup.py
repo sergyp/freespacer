@@ -13,7 +13,7 @@ setup(
     ],
     packages=find_packages(),
     entry_points={
-        'console_scripts': 'freespacer = freespacer.main:main'
+        'console_scripts': 'freespacer = freespacer:main'
     },
     classifiers=[
         "Programming Language :: Python :: 3.5",
