@@ -42,7 +42,7 @@ def clean(need_space: str, no_delete: bool, min_rest_count: int, max_del_count: 
         stat['deletion_pretend_count'] += 1
 
         if no_delete:
-            click.echo(f'SKIPPED {f}')
+            click.echo('SKIPPED {f}'.format(**locals()))
             stat['skipped_count'] += 1
         else:
             stat['deletion_tries_count'] += 1
@@ -50,22 +50,24 @@ def clean(need_space: str, no_delete: bool, min_rest_count: int, max_del_count: 
                 f.unlink()
             except Exception as e:
                 stat['errors_count'] += 1
-                click.echo(f"ERROR   {f}  # {e}")
+                click.echo('ERROR   {f}  # {e}'.format(**locals()))
             else:
                 stat['realy_deleted_count'] += 1
-                click.echo(f'DELETED {f}')
+                click.echo('DELETED {f}'.format(**locals()))
 
     if not(len(files) > min_rest_count):
-        click.echo(f'Done by min_rest_count={min_rest_count} => {len(files)}', err=True)
+        l = len(files)
+        click.echo('Done by min_rest_count={min_rest_count} => {l}'.format(**locals()), err=True)
 
-    if not((max_del_count < 0 or len(deleted) < max_del_count)):
-        click.echo(f'Done by max_del_count={max_del_count} > {len(deleted)}', err=True)
+    if not(max_del_count < 0 or len(deleted) < max_del_count):
+        l = len(deleted)
+        click.echo('Done by max_del_count={max_del_count} > {l}'.format(**locals()), err=True)
 
     if is_space_enough(need_space, path=path):
         total, used, free = shutil.disk_usage(str(path))
-        click.echo(f'Done by space, there is enough: {total} from {free} is >= {need_space}', err=True)
+        click.echo('Done by space, there is enough: {total} from {free} is >= {need_space}'.format(**locals()), err=True)
 
     max_stat_key = max(map(len, stat.keys()))
     max_stat_value = max(map(len, map(str, stat.values())))
     for k, v in stat.items():
-        click.echo(f'{k:{max_stat_key}}: {v:{max_stat_value}}', err=True)
+        click.echo('{k:{max_stat_key}}: {v:{max_stat_value}}'.format(**locals()), err=True)
