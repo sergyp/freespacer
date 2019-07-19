@@ -10,6 +10,7 @@ setup(
     license='MIT',
     install_requires=[
         "click",
+        "pathlib",
     ],
     packages=find_packages(),
     entry_points={
