@@ -16,7 +16,7 @@ def is_space_enough(need, path=Path('.')):
     return free >= need_space_value
 
 
-def clean(need_space: str, no_delete: bool, min_rest_count: int, max_del_count: int, mask: str, path: Path):
+def clean(need_space, no_delete, min_rest_count, max_del_count, mask, path):
     """
     need_space - required free space size in MiB
     path       - path to clean while not enought free space
