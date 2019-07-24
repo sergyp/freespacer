@@ -1,19 +1,19 @@
 
 import click
-import shutil
 from pathlib import Path
 from collections import Counter
+from psutil import disk_usage
 
 from .data_volume_parser import to_bytes
 
 
 def is_space_enough(need, path=Path('.')):
-    total, used, free = shutil.disk_usage(str(path))
+    usage = disk_usage(str(path))
     need_space_value, unit = to_bytes(need)
     if unit == '%':
-        need_space_value = int(total * need_space_value / 100)
+        need_space_value = int(usage.total * need_space_value / 100)
 
-    return free >= need_space_value
+    return usage.free >= need_space_value
 
 
 def clean(need_space, no_delete, min_rest_count, max_del_count, mask, path):
@@ -64,8 +64,8 @@ def clean(need_space, no_delete, min_rest_count, max_del_count, mask, path):
         click.echo('Done by max_del_count={max_del_count} > {l}'.format(**locals()), err=True)
 
     if is_space_enough(need_space, path=path):
-        total, used, free = shutil.disk_usage(str(path))
-        click.echo('Done by space, there is enough: {total} from {free} is >= {need_space}'.format(**locals()), err=True)
+        usage = disk_usage(str(path))
+        click.echo('Done by space, there is enough: {usage.total} from {usage.free} is >= {need_space}'.format(**locals()), err=True)
 
     max_stat_key = max(map(len, stat.keys()))
     max_stat_value = max(map(len, map(str, stat.values())))

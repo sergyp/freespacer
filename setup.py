@@ -11,6 +11,7 @@ setup(
     install_requires=[
         "click",
         "pathlib",
+        "psutil",
     ],
     packages=find_packages(),
     entry_points={
